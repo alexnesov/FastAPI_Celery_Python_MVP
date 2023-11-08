@@ -6,14 +6,48 @@
 </head>
 <body>
     <h1>Task Manager</h1>
-    <form action="/create_task/" method="post">
+    <form onsubmit="event.preventDefault(); createTask();">
         <label for="task_name">Task Name:</label>
         <input type="text" name="task_name" id="task_name" required>
         <button type="submit">Create Task</button>
     </form>
+    <div id="task-id"></div> <!-- Display task ID here -->
     <h2>Task List</h2>
-    <ul>
+    <ul id="task-list">
         <!-- Display task list here -->
     </ul>
+    
+    <script>
+        // Define the createTask function
+        function createTask() {
+            var taskName = document.getElementById("task_name").value;
+            if (taskName) {
+                fetch("/create_task/", {
+                    method: "POST",
+                    body: new URLSearchParams({ task_name: taskName }),
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // Display the task ID on the page
+                        var taskIdDisplay = document.getElementById("task-id");
+                        taskIdDisplay.textContent = `Task ID: ${data.task_id}`;
+                    });
+            }
+        }
+
+        // WebSocket code for real-time updates
+        var socket = new WebSocket("ws://localhost:8000/ws");
+
+        socket.onmessage = function(event) {
+            var taskStatus = JSON.parse(event.data);
+            var taskList = document.getElementById("task-list");
+            var listItem = document.createElement("li");
+            listItem.textContent = `Task ID: ${taskStatus.task_id}, Status: ${taskStatus.task_status}`;
+            taskList.appendChild(listItem);
+        };
+    </script>
 </body>
 </html>
