@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+</head>
+<body>
+    <h1>Task Manager</h1>
+    
+    <form method="post" action="/create_task/">
+        <label for="task_name">Task Name:</label>
+        <input type="text" name="task_name" required>
+        <button type="submit">Create Task</button>
+    </form>
+    
+    <h2>Task List:</h2>
+    <ul>
+        {% for task in tasks %}
+        <li>Task ID: {{ task.task_id }} - Status: {{ task.status }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
