@@ -31,9 +31,11 @@
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        // Display the task ID on the page
-                        var taskIdDisplay = document.getElementById("task-id");
-                        taskIdDisplay.textContent = `Task ID: ${data.task_id}`;
+                        // Append the new task to the task list
+                        var taskList = document.getElementById("task-list");
+                        var listItem = document.createElement("li");
+                        listItem.textContent = `Task ID: ${data.task_id}`;
+                        taskList.appendChild(listItem);
                     });
             }
         }

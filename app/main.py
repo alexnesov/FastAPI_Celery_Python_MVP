@@ -4,6 +4,7 @@ from celery.result import AsyncResult
 from celery_worker.tasks import create_task
 import json
 from fastapi.websockets import WebSocket, WebSocketDisconnect  # Add these imports
+import time
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
